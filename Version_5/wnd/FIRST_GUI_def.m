@@ -23,7 +23,7 @@ graphics_toolkit qt;
 ##
 
 function About_doIt(src, data, FIRST_GUI)
-   figure("name","Priftis Brothers","NumberTitle","off", 'MenuBar', 'none', 'resize', 'off','windowstyle', 'modal');
+   figure("name","Priftis Brothers","NumberTitle","off", 'MenuBar', 'figure', 'resize', 'off','windowstyle', 'modal');
    title("Created by Priftis Brothers with love 2021©");
    axis off
    
@@ -232,6 +232,24 @@ function LOS_Rice_Slider_doIt(src, data, FIRST_GUI)
 % This code will be executed when user change the value of slider.
 % As default, all events are deactivated, to activate must set the
 % propertie 'generateCallbck' from the properties editor
+end
+
+function LOS_View_doIt(src, data, FIRST_GUI)
+  fig=figure("Name","LOS_View","NumberTitle","off", 'MenuBar', 'figure', 'toolbar', 'figure', 'resize', 'on','windowstyle', 'modal');
+  title("Created by Priftis Brothers with love 2021©");
+  
+  t = 0:0.01:2*pi;
+  
+  s1 = subplot( 2, 1, 1 ); 
+  plot( t, sin(t) ); set( s1, 'title', 'Indicative Rice p.d. for k=0,5 with constant signal power' );
+  xlabel("Fading Amplitude(V)");
+  ylabel("Probablity Density");
+  
+  s3 = subplot( 2, 1, 2 ); 
+  plot( t, tan(t) ); set( s3, 'title', 'Indicative time series of rice fading -- for k=0,5-for constant signal power' );
+  xlabel("Time(s)");
+  ylabel("Signal to relative to mean(dB)");
+  
 end
 
 function Secondary_Paths_Slider_doIt(src, data, FIRST_GUI)
@@ -965,7 +983,8 @@ function ret = show_FIRST_GUI()
 	'ForegroundColor', [0.000 0.000 0.000], ... 
 	'Position', [530 80 64 22], ... 
 	'String', 'View', ... 
-	'TooltipString', '');
+	'TooltipString', '', ...
+  'callback', '');
   SecondaryPaths = uicontrol( ...
 	'parent',GroupPanel_10, ... 
 	'Style','text', ... 
@@ -1359,6 +1378,7 @@ set (Speed_Slider, 'callback', {@Speed_Slider_doIt, FIRST_GUI});
 set (Receiver_Antenna_Type_Chooser, 'callback', {@Receiver_Antenna_Type_Chooser_doIt, FIRST_GUI});
 set (Receiver_Edit, 'callback', {@Receiver_Edit_doIt, FIRST_GUI});
 set (LOS_Rice_Slider, 'callback', {@LOS_Rice_Slider_doIt, FIRST_GUI});
+set (LOS_View, 'callback', {@LOS_View_doIt, FIRST_GUI});
 set (Secondary_Paths_Slider, 'callback', {@Secondary_Paths_Slider_doIt, FIRST_GUI});
 set (RMS_Views, 'callback', {@RMS_Views_doIt, FIRST_GUI});
 set (RMS_Delay_Chooser, 'callback', {@RMS_Delay_Chooser_doIt, FIRST_GUI});
