@@ -8,6 +8,7 @@ function wnd = FIRST_GUI()
   FIRST_GUI_def;
   
   wnd = show_FIRST_GUI();
+  #ricepdf;
+  #jakes;
   
-  %ricepdf;
 end

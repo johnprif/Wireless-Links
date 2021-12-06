@@ -93,9 +93,6 @@ end
 function LOS_Slider_doIt(src, data, FIRST_GUI)
   set(FIRST_GUI.LOS,'String',sprintf('LOS\n%.2f%c',get(FIRST_GUI.LOS_Slider,"Value"), '%'));
   set(FIRST_GUI.NLOS,'String',sprintf('NLOS\n%.2f%c',100-get(FIRST_GUI.LOS_Slider,"Value"), '%'));
-% This code will be executed when user change the value of slider.
-% As default, all events are deactivated, to activate must set the
-% propertie 'generateCallbck' from the properties editor
 end
 
 ## @deftypefn  {} {} Distance__Slider_2_BD_doIt (@var{src}, @var{data}, @var{FIRST_GUI})
@@ -182,8 +179,9 @@ end
 ## @end deftypefn
 function Medium_Edit_doIt(src, data, FIRST_GUI)
 
-    figRec=figure("Name","Propagation Model Properties","NumberTitle","off", 'MenuBar', 'figure', 'toolbar', 'figure', 'resize', 'off','windowstyle', 'modal');
-  axis off
+    figRec=figure("Name","Propagation Model Properties","NumberTitle","off", 'MenuBar', 'figure', 'toolbar', 'figure', 'resize', 'off','windowstyle', 'modal');   
+    axis off
+
 % This code will be executed when user click the button control.
 % As default, all events are deactivated, to activate must set the
 % propertie 'generateCallback' from the properties editor
@@ -198,16 +196,16 @@ function Medium_Edit_doIt(src, data, FIRST_GUI)
        setPropagationModel(figRec)
   endif
   if(strcmp(antenna_model, "Okumura-Hata Local Area")==1)
-       setFigContextLoopAntenna(figRec)
+       setPropagationModel(figRec)
   endif 
   if(strcmp(antenna_model, "Okumura-Hata Suburban Area")==1)
-      setFigContextHertzianDipole(figRec)
+      setPropagationModel(figRec)
   endif  
   if(strcmp(antenna_model, "Okumura-Hata Urban Area")==1)
-     setFigContextShortDipole(figRec)
+     setPropagationModel(figRec)
   endif  
   if(strcmp(antenna_model, "Olane Earth")==1)
-     setFigContextShortDipole(figRec)
+     setPropagationModel(figRec)
   endif
 end
 
@@ -219,11 +217,13 @@ end
 function Speed_Units_doIt(src, data, FIRST_GUI)
   speedUnits=strsplit(get(FIRST_GUI.Speed_Units,"String"),"|");
   set(FIRST_GUI.Speed,'String',sprintf('Speed = %.1f %s',get(FIRST_GUI.Speed_Slider,"Value"), speedUnits{1,int8(get(FIRST_GUI.Speed_Units,"Value"))}));
-end
+  
+ end
 
 function Speed_Slider_doIt(src, data, FIRST_GUI)
   speedUnits=strsplit(get(FIRST_GUI.Speed_Units,"String"),"|");
   set(FIRST_GUI.Speed,'String',sprintf('Speed = %.1f %s',get(FIRST_GUI.Speed_Slider,"Value"), speedUnits{1,int8(get(FIRST_GUI.Speed_Units,"Value"))}));
+  
 end
 
 ## @deftypefn  {} {} Receiver_Antenna_Type_Chooser_doIt (@var{src}, @var{data}, @var{FIRST_GUI})
@@ -271,11 +271,7 @@ function setPropagationModel(figRec)
 	'Position', [100 400 90 17], ... 
 	'String', '0', ... 
 	'TooltipString', '');
-   
-   
-   
-   
-   
+
    Rin = uicontrol( ...
 	'parent',figRec, ... 
 	'Style','text', ... 
@@ -287,7 +283,7 @@ function setPropagationModel(figRec)
 	'FontWeight', 'normal', ... 
 	'ForegroundColor', [0.000 0.000 0.000], ... 
 	'HorizontalAlignment', 'left', ... 
-	'Position', [10 200 90 17], ... 
+	'Position', [10 380 90 17], ... 
 	'String', 'm', ... 
 	'TooltipString', '');
   
@@ -302,7 +298,7 @@ function setPropagationModel(figRec)
 	'FontWeight', 'normal', ... 
 	'ForegroundColor', [0.000 0.000 0.000], ... 
 	'HorizontalAlignment', 'left', ... 
-	'Position', [100 200 90 17], ... 
+	'Position', [100 380 90 17], ... 
 	'String', '0', ... 
 	'TooltipString', '');
   
@@ -351,7 +347,7 @@ function setFigContext(figRec, first, second, secEnable)
 	'FontWeight', 'normal', ... 
 	'ForegroundColor', [0.000 0.000 0.000], ... 
 	'HorizontalAlignment', 'left', ... 
-	'Position', [10 200 90 17], ... 
+	'Position', [10 380 90 17], ... 
 	'String', second, ... 
 	'TooltipString', '', ...
   'visible', secEnable);
@@ -367,7 +363,7 @@ function setFigContext(figRec, first, second, secEnable)
 	'FontWeight', 'normal', ... 
 	'ForegroundColor', [0.000 0.000 0.000], ... 
 	'HorizontalAlignment', 'left', ... 
-	'Position', [100 200 90 17], ... 
+	'Position', [100 380 90 17], ... 
 	'String', '0', ... 
 	'TooltipString', '', ...
   'visible', secEnable);
@@ -416,9 +412,10 @@ function LOS_Rice_Slider_doIt(src, data, FIRST_GUI)
 end
 
 function LOS_View_doIt(src, data, FIRST_GUI)
- 
-  K=get(FIRST_GUI.LOS_Rice_Slider,'value');
-
+  
+  
+  
+  K=get(FIRST_GUI.LOS_Rice_Slider,"Value");
   x = linspace(0, 4, 100);
   figure('windowstyle', 'modal');
 
@@ -444,37 +441,21 @@ function LOS_View_doIt(src, data, FIRST_GUI)
   legend('k=0',sprintf('k=%.0f',K));
 
   subplot(2,1,2);
-  grid on;
   hold on;
-#{
+  grid on;
+  colors={'k','r'};
   i=1;
-  for k=[0 K]
-     [Result, t]=jakes(handles.environment.Sender.Signal.F,handles.carspeed,1,k);
+
+  
+  for k= [0 K]
+     [Result, t]=jakes(get(FIRST_GUI.Frequency_Slider,"Value")*10^6,get(FIRST_GUI.Speed_Slider,"Value"),1,k);
      plot(t,20.*log10(abs(Result)),colors{i});
      i=i+1;
   end
   xlabel('Time (s)');
   ylabel('Signal relative to mean (dB)');
   title({'Indicative time series of rice fading', sprintf('for k=0, %d - for constant signal power',K)});
-  legend('k=0',sprintf('k=%d',K));
-#}
-
-#{
- fig=figure("Name","LOS_View","NumberTitle","off", 'MenuBar', 'figure', 'toolbar', 'figure', 'resize', 'on','windowstyle', 'modal');
-  title("Created by Priftis Brothers with love 2021©");
-  
-  t = 0:0.01:2*pi;
-  
-  s1 = subplot( 2, 1, 1 ); 
-  plot( t, sin(t) ); set( s1, 'title', 'Indicative Rice p.d. for k=0,5 with constant signal power' );
-  xlabel("Fading Amplitude(V)");
-  ylabel("Probablity Density");
-  
-  s3 = subplot( 2, 1, 2 ); 
-  plot( t, tan(t) ); set( s3, 'title', 'Indicative time series of rice fading -- for k=0,5-for constant signal power' );
-  xlabel("Time(s)");
-  ylabel("Signal to relative to mean(dB)");
-#}  
+  legend('k=0',sprintf('k=%.0f',K));
 end
 
 function Secondary_Paths_Slider_doIt(src, data, FIRST_GUI)
@@ -486,27 +467,94 @@ end
 ## Define a callback for default action of RMS_Views control.
 ##
 ## @end deftypefn
+function kwstas = convertToKmh(speedUnit)
+  kwstas=0;
+  if(strcmp(speedUnit, "m/s")==1)
+    kwstas = 3.66;
+  endif
+  if(strcmp(speedUnit, "Km/h")==1)
+    kwstas = 1;
+  endif
+  
+end 
+
+
 function RMS_Views_doIt(src, data, FIRST_GUI)
-  fig=figure("Name","LOS_View","NumberTitle","off", 'MenuBar', 'figure', 'toolbar', 'figure', 'resize', 'on','windowstyle', 'modal');
-  title("Created by Priftis Brothers with love 2021©");
-  
-  t = 0:0.01:2*pi;
-  
-  s0 = subplot(2, 1, 1);
-  tx = ty = linspace (-8, 8, 41)';
-  [xx, yy] = meshgrid (tx, ty);
-  r = sqrt (xx .^ 2 + yy .^ 2) + eps;
-  tz = sin (r) ./ r;
-  mesh (tx, ty, tz);
-  set( s0, 'title', 'Time-variant impulse response - secondary paths only' );
-  xlabel("Relative Delay (ns)");
-  ylabel("Time (s)");
-  zlabel("Signal relative to mean (dB)");
-  
-  s1 = subplot(2, 1, 2); 
-  plot( t, sin(t) ); set( s1, 'title', 'Power-delay profile - secondary paths only' );
-  xlabel("Relative Delay(ns)");
-  ylabel("Probablity Density");
+N=floor(get(FIRST_GUI.Secondary_Paths_Slider,'Value'));
+rms=strsplit(get(FIRST_GUI.RMS_Delay_Chooser,"String"),"|");
+i=rms{1,int8(get(FIRST_GUI.RMS_Delay_Chooser,"Value"))};
+a=0;
+b=0;
+Gains=0;
+disp(i);
+if (strcmp(i, "Indoor Cells")==1)
+    disp("je rock");
+    a=0.01;
+    b=0.05;
+    Gains= -(2).*rand(1,N);
+endif  
+if (strcmp(i, "Urban Macrocell")==1)
+   a=1;
+   b=3;
+   Gains= -(15).*rand(1,N);
+endif 
+    if(strcmp(i, "Urban Macrocell")==1 )
+        a=1;
+        b=3;
+        Gains= -(15).*rand(1,N);
+    endif
+    if(strcmp(i, "Suburban Macrocell")==1)
+        a=0;
+        b=1;
+        Gains= -(5).*rand(1,N);
+        endif
+    if(strcmp(i, "Open Area")==1 )
+        a=0;
+        b=0.2;
+        Gains= -(3).*rand(1,N);
+        endif
+    if(strcmp(i, "Hilly Area Macrocell")==1)
+        a=3;
+        b=10;
+        Gains= -(25).*rand(1,N);
+        endif
+    if(strcmp(i, "Mobile Satellite")==1)
+        a=0.04;
+        b=0.05;   
+        Gains= -(5).*rand(1,N);
+        endif
+Delays= (1e-6)*(a+(b-a).*rand(1,N));
+
+%CC=handles.environment.Sender.Signal.P;
+CC=40;
+k=get(FIRST_GUI.LOS_Rice_Slider,'Value');
+figure; 
+
+
+speedUnits=strsplit(get(FIRST_GUI.Speed_Units,"String"),"|");
+value=rms{1,int8(get(FIRST_GUI.RMS_Delay_Chooser,"Value"))};
+
+h1=subplot(2,1,1);
+set(h1,'NextPlot','add');
+grid on;
+for i=1:N
+   C=10^(0.1*(10*log10(CC)+Gains(i))); 
+   s=sqrt(C/(k+1));
+   [Result, t]=jakes(get(FIRST_GUI.Frequency_Slider,'Value')*10^6,get(FIRST_GUI.Speed_Slider,'Value')*convertToKmh(value),1,k);
+   plot3(ones(1,length(t)).*Delays(i)*1e+9,t,Gains(i)+20.*log10(abs(Result)));
+end
+ylabel('Time (s)');
+zlabel('Signal relative to mean (dB)');
+xlabel('Relative Delay (ns)');
+title(sprintf('Time-variant impulse response - secondary paths only'));
+view([-18 32]);
+
+subplot(2,1,2);
+stem(Delays*1e+9, abs(Gains));
+ylabel('Signal relative to mean (dB)');
+xlabel('Relative Delay (ns)');
+title(sprintf('Power-delay profile - secondary paths only'));
+
   
   
 % This code will be executed when user click the button control.
@@ -646,11 +694,11 @@ end
 ## @end deftypefn
 function ret = show_FIRST_GUI()
   _scrSize = get(0, "screensize");
-  _xPos = (_scrSize(3) - 1176)/2;
-  _yPos = (_scrSize(4) - 888)/2;
+  _xPos = (_scrSize(3) - 1280)/2;
+  _yPos = (_scrSize(4) - 960)/2;
    FIRST_GUI = figure ( ... 
 	'Color', [0.941 0.941 0.941], ...
-	'Position', [_xPos _yPos 1176 888], ...
+	'Position', [_xPos _yPos 1150 890], ...
 	'resize', 'off', ...
 	'windowstyle', 'modal', ...
 	'MenuBar', 'none', ...
@@ -1675,7 +1723,8 @@ set (StopSim, 'callback', {@StopSim_doIt, FIRST_GUI});
 % The source code writed here will be executed when
 % windows load. Work like 'onLoad' event of other languages.
 %
-  
+  speed=0;
+  frequency=0;
   set(FIRST_GUI.figure, 'visible', 'on', 'resize', 'on');
   I=imread("blocks.png");
   ret = FIRST_GUI;
