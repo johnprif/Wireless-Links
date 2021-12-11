@@ -467,72 +467,83 @@ end
 ## Define a callback for default action of RMS_Views control.
 ##
 ## @end deftypefn
-function kwstas = convertToKmh(speedUnit)
-  kwstas=0;
+function speedValue = castToMS(oldValue, speedUnit)
+  speedValue=oldValue;
   if(strcmp(speedUnit, "m/s")==1)
-    kwstas = 3.66;
+    speedValue = oldValue;
   endif
   if(strcmp(speedUnit, "Km/h")==1)
-    kwstas = 1;
+    speedValue = oldValue*1000/3600;   
   endif
-  
 end 
 
+function wattValue = castToWatt(oldValue, wattUnit)
+  wattValue = oldValue;
+  if(strcmp(wattUnit, "dbW")==1)
+    wattValue = 10^(oldValue*0.1);
+  endif
+  if(strcmp(wattUnit, "mW")==1)
+    wattValue = oldValue*(10^(-3));
+  endif
+  if(strcmp(wattUnit, "dbmW")==1)
+    wattValue = (10^(oldValue*0.1))/1000;
+  endif
+end
 
 function RMS_Views_doIt(src, data, FIRST_GUI)
-N=floor(get(FIRST_GUI.Secondary_Paths_Slider,'Value'));
-rms=strsplit(get(FIRST_GUI.RMS_Delay_Chooser,"String"),"|");
-i=rms{1,int8(get(FIRST_GUI.RMS_Delay_Chooser,"Value"))};
-a=0;
-b=0;
-Gains=0;
-disp(i);
-if (strcmp(i, "Indoor Cells")==1)
-    disp("je rock");
-    a=0.01;
-    b=0.05;
-    Gains= -(2).*rand(1,N);
-endif  
-if (strcmp(i, "Urban Macrocell")==1)
-   a=1;
-   b=3;
-   Gains= -(15).*rand(1,N);
-endif 
-    if(strcmp(i, "Urban Macrocell")==1 )
-        a=1;
-        b=3;
-        Gains= -(15).*rand(1,N);
-    endif
-    if(strcmp(i, "Suburban Macrocell")==1)
-        a=0;
-        b=1;
-        Gains= -(5).*rand(1,N);
-        endif
-    if(strcmp(i, "Open Area")==1 )
-        a=0;
-        b=0.2;
-        Gains= -(3).*rand(1,N);
-        endif
-    if(strcmp(i, "Hilly Area Macrocell")==1)
-        a=3;
-        b=10;
-        Gains= -(25).*rand(1,N);
-        endif
-    if(strcmp(i, "Mobile Satellite")==1)
-        a=0.04;
-        b=0.05;   
-        Gains= -(5).*rand(1,N);
-        endif
+  N=floor(get(FIRST_GUI.Secondary_Paths_Slider,'Value'));
+  rms=strsplit(get(FIRST_GUI.RMS_Delay_Chooser,"String"),"|");
+  i=rms{1,int8(get(FIRST_GUI.RMS_Delay_Chooser,"Value"))};
+  if (strcmp(i, "Indoor Cells")==1)
+      a=0.01;
+      b=0.05;
+      Gains= -(2).*rand(1,N);
+  endif  
+  if (strcmp(i, "Urban Macrocell")==1)
+    a=1;
+    b=3;
+    Gains= -(15).*rand(1,N);
+  endif 
+  if(strcmp(i, "Urban Macrocell")==1 )
+    a=1;
+    b=3;
+    Gains= -(15).*rand(1,N);
+  endif
+  if(strcmp(i, "Suburban Macrocell")==1)
+    a=0;
+    b=1;
+    Gains= -(5).*rand(1,N);
+  endif
+  if(strcmp(i, "Open Area")==1 )
+    a=0;
+    b=0.2;
+    Gains= -(3).*rand(1,N);
+  endif
+  if(strcmp(i, "Hilly Area Macrocell")==1)
+    a=3;
+    b=10;
+    Gains= -(25).*rand(1,N);
+  endif
+  if(strcmp(i, "Mobile Satellite")==1)
+    a=0.04;
+    b=0.05;   
+    Gains= -(5).*rand(1,N);
+  endif
 Delays= (1e-6)*(a+(b-a).*rand(1,N));
 
-%CC=handles.environment.Sender.Signal.P;
-CC=40;
+wattUnits=strsplit(get(FIRST_GUI.Power_Units,"String"),"|");
+specificWattUnit = wattUnits{1,int8(get(FIRST_GUI.Power_Units,"Value"))};
+
+CC=get(FIRST_GUI.Power_Slider,'Value');
+CC = castToWatt(CC, specificWattUnit);
 k=get(FIRST_GUI.LOS_Rice_Slider,'Value');
-figure; 
+lakis = figure; 
+set(lakis, "windowstyle", "modal");
 
-
+oldSpeedValue = get(FIRST_GUI.Speed_Slider, "Value");
 speedUnits=strsplit(get(FIRST_GUI.Speed_Units,"String"),"|");
-value=rms{1,int8(get(FIRST_GUI.RMS_Delay_Chooser,"Value"))};
+specificSpeedUnit=speedUnits{1,int8(get(FIRST_GUI.Speed_Units,"Value"))};
+disp(castToMS(oldSpeedValue, specificSpeedUnit));
 
 h1=subplot(2,1,1);
 set(h1,'NextPlot','add');
@@ -540,8 +551,8 @@ grid on;
 for i=1:N
    C=10^(0.1*(10*log10(CC)+Gains(i))); 
    s=sqrt(C/(k+1));
-   [Result, t]=jakes(get(FIRST_GUI.Frequency_Slider,'Value')*10^6,get(FIRST_GUI.Speed_Slider,'Value')*convertToKmh(value),1,k);
-   plot3(ones(1,length(t)).*Delays(i)*1e+9,t,Gains(i)+20.*log10(abs(Result)));
+   [Result, t]=jakes(get(FIRST_GUI.Frequency_Slider,'Value')*10^6, castToMS(oldSpeedValue, specificSpeedUnit),1,k);
+   plot3(ones(1,length(t)).*Delays(i)*(10^9),t,Gains(i)+20.*log10(abs(Result)));
 end
 ylabel('Time (s)');
 zlabel('Signal relative to mean (dB)');
@@ -550,7 +561,8 @@ title(sprintf('Time-variant impulse response - secondary paths only'));
 view([-18 32]);
 
 subplot(2,1,2);
-stem(Delays*1e+9, abs(Gains));
+stem(Delays*(10^9), abs(Gains));
+
 ylabel('Signal relative to mean (dB)');
 xlabel('Relative Delay (ns)');
 title(sprintf('Power-delay profile - secondary paths only'));
