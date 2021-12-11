@@ -9,8 +9,10 @@
 function wnd = FIRST_GUI()
   pkg load communications;
   FIRST_GUI_def;
+  carSimulator;
   
   wnd = show_FIRST_GUI();
+  #showCarSimulator();
   #ricepdf;
   #jakes;
   
