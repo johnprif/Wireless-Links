@@ -4,7 +4,10 @@
 ## Create and show the dialog, return a struct as representation of dialog.
 ##
 ## @end deftypefn
+
+
 function wnd = FIRST_GUI()
+  pkg load communications;
   FIRST_GUI_def;
   
   wnd = show_FIRST_GUI();

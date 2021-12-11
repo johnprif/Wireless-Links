@@ -543,7 +543,9 @@ set(lakis, "windowstyle", "modal");
 oldSpeedValue = get(FIRST_GUI.Speed_Slider, "Value");
 speedUnits=strsplit(get(FIRST_GUI.Speed_Units,"String"),"|");
 specificSpeedUnit=speedUnits{1,int8(get(FIRST_GUI.Speed_Units,"Value"))};
-disp(castToMS(oldSpeedValue, specificSpeedUnit));
+newSpeedValue = castToMS(oldSpeedValue, specificSpeedUnit);
+
+signalFrequency = get(FIRST_GUI.Frequency_Slider, "Value")*(10^6);
 
 h1=subplot(2,1,1);
 set(h1,'NextPlot','add');
@@ -551,7 +553,7 @@ grid on;
 for i=1:N
    C=10^(0.1*(10*log10(CC)+Gains(i))); 
    s=sqrt(C/(k+1));
-   [Result, t]=jakes(get(FIRST_GUI.Frequency_Slider,'Value')*10^6, castToMS(oldSpeedValue, specificSpeedUnit),1,k);
+   [Result, t]=jakes(signalFrequency, newSpeedValue,1,k);
    plot3(ones(1,length(t)).*Delays(i)*(10^9),t,Gains(i)+20.*log10(abs(Result)));
 end
 ylabel('Time (s)');
@@ -596,17 +598,49 @@ function White_Noise_View_doIt(src, data, FIRST_GUI)
   fig=figure("Name","WhiteNoise_View","NumberTitle","off", 'MenuBar', 'figure', 'toolbar', 'figure', 'resize', 'on','windowstyle', 'modal');
   title("Created by Priftis Brothers with love 2021©");
   
-  t = 0:0.01:2*pi;
+  wattUnits=strsplit(get(FIRST_GUI.Power_Units,"String"),"|");
+  specificWattUnit = wattUnits{1,int8(get(FIRST_GUI.Power_Units,"Value"))};
+
+  CC=get(FIRST_GUI.Power_Slider,'Value');
+  CC = castToWatt(CC, specificWattUnit);
   
+  oldSpeedValue = get(FIRST_GUI.Speed_Slider, "Value");
+  speedUnits=strsplit(get(FIRST_GUI.Speed_Units,"String"),"|");
+  specificSpeedUnit=speedUnits{1,int8(get(FIRST_GUI.Speed_Units,"Value"))};
+  newSpeedValue = castToMS(oldSpeedValue, specificSpeedUnit);
+  
+  k=get(FIRST_GUI.LOS_Rice_Slider,'Value');
+  
+  signalFrequency = get(FIRST_GUI.Frequency_Slider, "Value")*(10^6);
+  
+  [Result, t]=jakes(signalFrequency,newSpeedValue,1,k);
+  
+  #pkg load communications
   s1 = subplot( 2, 1, 1 ); 
-  plot( t, sin(t) ); set( s1, 'title', 'Indicative rice fading for k=5 AWGN with Eb/No=0.0 (QAM-16-3/4)' );
+  Eb_No_Slider_Value = get(FIRST_GUI.Eb_No_Slider, "value");
+  Indicative_rice_fading = sprintf('Indicative rice fading for k=5 AWGN with Eb/No=%.2f (QAM-16-3/4)',Eb_No_Slider_Value);
+  plot( t, 20.*log10(abs(awgn(Result,Eb_No_Slider_Value))), 'b'); set( s1, 'title', Indicative_rice_fading );
   xlabel("Time (s)");
   ylabel("Signal to relative to mean(dB)");
   
   s3 = subplot( 2, 1, 2 ); 
-  plot( t, tan(t) ); set( s3, 'title', 'QAM-16 over fading channel with rice factor=5 and diversity order L=1..20' );
+  EbNo = 8:2:20;
+  M = 16; % Use 16 QAM
+  L = 1; % Start without diversity
+  ber = berfading(EbNo,'qam',M,L);
+  semilogy(EbNo,ber);
+  text(18.5, 0.02, sprintf('L=%d', L))
+  hold on
+  % Loop over diversity order, L, 2 to 20
+  for L=2:20
+    ber = berfading(EbNo,'qam',M,L,get(FIRST_GUI.LOS_Rice_Slider, "Value"));
+    semilogy(EbNo,ber);
+  end
+  text(18.5, 1e-11, sprintf('L=%d', L))
+  title(sprintf('QAM-16 over fading channel with rice factor=%d and diversity order L=1..20',Eb_No_Slider_Value));
   xlabel("Eb/N0 (dB)");
   ylabel("BER");
+  grid on
 end
 
 ## @deftypefn  {} {} PathLoss_doIt (@var{src}, @var{data}, @var{FIRST_GUI})
