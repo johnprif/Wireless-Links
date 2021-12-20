@@ -595,7 +595,8 @@ end
 ##
 ## @end deftypefn
 function White_Noise_View_doIt(src, data, FIRST_GUI)
-  fig=figure("Name","WhiteNoise_View","NumberTitle","off", 'MenuBar', 'figure', 'toolbar', 'figure', 'resize', 'on','windowstyle', 'modal');
+  output = system ('""..\Python310\python bridge.py""', 1);
+  fig=figure("Name","WhiteNoise_View","NumberTitle","off", 'MenuBar', 'figure', 'toolbar', 'figure', 'resize', 'on','windowstyle', 'modal', 'visible', 'on');
   title("Created by Priftis Brothers with love 2021©");
   
   wattUnits=strsplit(get(FIRST_GUI.Power_Units,"String"),"|");
@@ -615,6 +616,8 @@ function White_Noise_View_doIt(src, data, FIRST_GUI)
   
   [Result, t]=jakes(signalFrequency,newSpeedValue,1,k);
   
+  
+
   #pkg load communications
   s1 = subplot( 2, 1, 1 ); 
   Eb_No_Slider_Value = get(FIRST_GUI.Eb_No_Slider, "value");
@@ -667,10 +670,15 @@ end
 ##
 ## @end deftypefn
 function SimStart_doIt(src, data, FIRST_GUI)
+  wnd = show_Dialog_1(controlIfChecked(FIRST_GUI.PathLoss), controlIfChecked(FIRST_GUI.DelayProfile), controlIfChecked(FIRST_GUI.Recv));
+end
 
-% This code will be executed when user click the button control.
-% As default, all events are deactivated, to activate must set the
-% propertie 'generateCallback' from the properties editor
+function box = controlIfChecked(checkBox)
+   if(get(checkBox, 'Value')==1)
+     box = 'on';
+   else
+     box = 'off';
+   endif
 end
 
 ## @deftypefn  {} {} PauseSim_doIt (@var{src}, @var{data}, @var{FIRST_GUI})
