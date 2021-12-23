@@ -12,6 +12,119 @@ graphics_toolkit qt;
 ##
 
 
+
+
+
+
+function Demo_Play_doIt(src,data,FIRST_GUI)
+ % hObject    handle to DemoPlayMenuBtn (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+  %Set prerequisites of timevary.m 
+  myPulses=pulses(200,4,get(FIRST_GUI.LOS_Slider,'Value'));
+  global Kvary;
+  Kvary=(1-myPulses).*get(FIRST_GUI.LOS_Rice_Slider,'Value');
+  
+  global ShadowvaryDB;
+  ShadowvaryDB=-myPulses.*40; %(in dB from 10 to 40 at 8/7/2010) 
+  
+  global globalSNRdb;
+  globalSNRdb=get(FIRST_GUI.Eb_No_Slider,'Value');
+    
+  Dx=180/199;
+  S=(180/2)+get(FIRST_GUI.Horizon_Slider,'Value');
+  L=get(FIRST_GUI.Distance_Slider,'Value');
+  
+  global globalDoppler;
+  global globalTgain;
+  global globalRgain;
+  global globalPgain;
+  %handles.environment.Medium.c;
+  c=3*10^8;
+  globalMaxDoppler=get(FIRST_GUI.Speed_Slider,'Value')*get(FIRST_GUI.Frequency_Slider,'Value')/c;
+  
+  for i=1:200
+      x=(i-1)*Dx;
+      
+      wmega=atan(abs(S-x)/L);
+      th=pi/2-wmega;
+      if S<x
+          th=pi-th;
+      end
+      globalDoppler(i)=globalMaxDoppler*cos(th);
+      
+  end
+   
+
+h=figure;
+set(h,'CloseRequestFc','');
+h1=subplot(3,1,1);
+#set(h1,'NextPlot','add');
+#y=-log10(globalPgain)+log10(globalRgain)+log10(globalTgain)-ShadowvaryDB;
+#plot(h1, y);
+#H1=plot(h1,[1 1],[min(y) max(y)],'r');
+#set(h1,'XTick',[]);
+xlabel('Distance traveled');
+ylabel({'Aggregate gains','minus shadowing - DB'});
+title('Gain variation due to Antennas, Path Loss and Shadowing');
+
+h2=subplot(3,1,2);
+C=get(FIRST_GUI.Power_Slider, 'Value');
+K=get(FIRST_GUI.LOS_Rice_Slider, 'Value');
+i=1;
+for k=[0 K]
+   s=sqrt(C/(k+1));
+   [Result, t]=jakes(get(FIRST_GUI.Frequency_Slider,'Value'),get(FIRST_GUI.Speed_Slider,'Value'),s,k);
+   Y{i}=20.*log10(abs(Result));
+   i=i+1;
+end
+xlabel('Time (s)');
+ylabel('Signal relative to mean (dB)');
+title(sprintf('Time series of rice fading for k=0, %d - signal power is constant',K));
+
+
+
+IM=imread('demotext.png');
+h3=subplot(3,1,3);
+subimage(IM);
+set(h3,'XTick',[]);
+set(h3,'YTick',[]);
+
+for t=90:-1:-90
+    I=round(1+((90-t)*length(y)/180));
+    if I>length(y)
+        I=length(y);
+    end
+    set(H1,'XData',ones(size(get(H1,'XData'))).*I);
+    if myPulses(I)<=(max(myPulses)/2);
+        plot(h2, Y{2});
+        xlabel(h2,'time');
+        ylabel(h2,'Signal Power - DB');
+        title(h2,'LOS fading effect');
+        set(h2,'XTick',[]);
+    else
+        plot(h2, Y{1});        
+        xlabel(h2,'time');
+        ylabel(h2,'Signal Power - DB');
+        title(h2,'NLOS fading effect');
+        set(h2,'XTick',[]);
+    end
+    
+
+end
+
+uiwait(msgbox('Demo completed. Press OK to go back to the LAB.'));
+
+
+  
+end
+
+
+
+
+
+
 ##
 ##
 ## Begin callbacks definitions 
@@ -80,6 +193,7 @@ end
 ## @end deftypefn
 function Distance_Slider_doIt(src, data, FIRST_GUI)
   set(FIRST_GUI.Distance,'String',sprintf('Distance = %.1fm',get(FIRST_GUI.Distance_Slider,"Value")));
+  disp('hello');
 % This code will be executed when user change the value of slider.
 % As default, all events are deactivated, to activate must set the
 % propertie 'generateCallbck' from the properties editor
@@ -91,8 +205,10 @@ end
 ##
 ## @end deftypefn
 function LOS_Slider_doIt(src, data, FIRST_GUI)
-  set(FIRST_GUI.LOS,'String',sprintf('LOS\n%.2f%c',get(FIRST_GUI.LOS_Slider,"Value"), '%'));
-  set(FIRST_GUI.NLOS,'String',sprintf('NLOS\n%.2f%c',100-get(FIRST_GUI.LOS_Slider,"Value"), '%'));
+  lossValue = get(FIRST_GUI.LOS_Slider,"Value");
+  set(FIRST_GUI.LOS,'String',sprintf('LOS\n%.2f%c',lossValue, '%'));
+  set(FIRST_GUI.NLOS,'String',sprintf('NLOS\n%.2f%c',100-lossValue, '%'));
+  realCarSimulator(get(FIRST_GUI.Distance__Slider_2_BD,"Value"), lossValue);
 end
 
 ## @deftypefn  {} {} Distance__Slider_2_BD_doIt (@var{src}, @var{data}, @var{FIRST_GUI})
@@ -101,7 +217,10 @@ end
 ##
 ## @end deftypefn
 function Distance__Slider_2_BD_doIt(src, data, FIRST_GUI)
-  set(FIRST_GUI.Distance_label,'String',sprintf('Distance = %.1fm',get(FIRST_GUI.Distance__Slider_2_BD,"Value")));
+  sliderValue = get(FIRST_GUI.Distance__Slider_2_BD,"Value");
+  set(FIRST_GUI.Distance_label,'String',sprintf('Distance = %.1fm',sliderValue));
+  realCarSimulator(sliderValue, get(FIRST_GUI.LOS_Slider,"Value"));
+  disp('hello_2');
 % This code will be executed when user change the value of slider.
 % As default, all events are deactivated, to activate must set the
 % propertie 'generateCallbck' from the properties editor
@@ -773,7 +892,7 @@ function ret = show_FIRST_GUI()
   'parent',FIRST_GUI, ...
   'label','&Demo'
   );
-  Demo_Text = uimenu( ...
+  Demo_Play = uimenu( ...
   'parent',Demo, ...
   'label','&Play', ...
   'callback', ''
@@ -1738,7 +1857,7 @@ function ret = show_FIRST_GUI()
       'StopSim', StopSim, ...
       'Transmiter_Edit', Transmiter_Edit);
 
-
+set (Demo_Play, 'callback', {@Demo_Play_doIt, FIRST_GUI});
 set (About, 'callback', {@About_doIt, FIRST_GUI});
 set (Height_Slider, 'callback', {@Height_Slider_doIt, FIRST_GUI});
 set (Elevation_Slider, 'callback', {@Elevation_Slider_doIt, FIRST_GUI});
