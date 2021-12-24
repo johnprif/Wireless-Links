@@ -27,32 +27,35 @@ function realCarSimulator(distanceFromRoad_buildings, loss)
   #y = y.+0.93; max distance from road 
   old_x = x;
   old_y = y;
-  
+  buildings_distance = ((0.93+0.1)-(distanceFromRoad_buildings/100));
+  disp(buildings_distance);
   #car
   #x.-(2.0) change + to move the car
-  surf(x.*(5).-(2.0), y.*(2).+0, z.*(0.12).-(0.4), 'FaceColor','r'); #car
+  surf(x.*(5).-(2.0), y.*(2).+buildings_distance, z.*(0.12).-(0.4), 'FaceColor','r'); #car
   
   #antenna
-  surf(x.-(0.75), y.+(1.5), z, 'FaceColor',[1 0 1]); 
+  surf(x.-(0.75), y.+(2.0), z, 'FaceColor',[1 0 1]); 
 
   
   x = x.*abs((5*(loss/100))-5);
   y = y.+((0.93+0.1)-(distanceFromRoad_buildings/100));
   
-  surf(x.+0, y.-(1.5), z, 'FaceColor','y'); 
-  surf(x.-(0.5), y.-(1.5), z, 'FaceColor','y');
-  surf(x.-1, y.-(1.5), z, 'FaceColor','y'); 
-  surf(x.-(1.5), y.-(1.5), z, 'FaceColor','y'); 
+ 
+  #y.-(1.5).+(buildings_distance+buildings_distance).+(0.89)
+  surf(x.+0, y.-(1.5).+buildings_distance, z, 'FaceColor','y'); 
+  surf(x.-(0.5), y.-(1.5).+buildings_distance, z, 'FaceColor','y');
+  surf(x.-1, y.-(1.5).+buildings_distance, z, 'FaceColor','y'); 
+  surf(x.-(1.5), y.-(1.5).+buildings_distance, z, 'FaceColor','y'); 
 
   #(ty.*0.04).-0.2
-  surf (tx.*10, (ty.*0.04).-0.24, ones(length(r)).*(-0.45), 'FaceColor','b', 'linestyle', 'none'); #rruge2 
+  surf (tx.*10, (ty.*0.04).-(0.24).+buildings_distance, ones(length(r)).*(-0.45), 'FaceColor','b', 'linestyle', 'none'); #rruge2 
   
   y = old_y.-((0.93+0.1)-(distanceFromRoad_buildings/100));
   
-  surf(x.+0, y.+(1.5), z, 'FaceColor','g'); 
-  surf(x.-(0.5), y.+(1.5), z, 'FaceColor','g');
-  surf(x.-1, y.+(1.5), z, 'FaceColor','g'); 
-  surf(x.-(1.5), y.+(1.5), z, 'FaceColor','g'); 
+  surf(x.+0, old_y.+(1.55), z, 'FaceColor','g'); 
+  surf(x.-(0.5), old_y.+(1.55), z, 'FaceColor','g');
+  surf(x.-1, old_y.+(1.55), z, 'FaceColor','g'); 
+  surf(x.-(1.5), old_y.+(1.55), z, 'FaceColor','g'); 
   hold on;
   axis([ -1  1    -1  1    -1  1]*4.5) #4.5 is render distance
   grid on;
