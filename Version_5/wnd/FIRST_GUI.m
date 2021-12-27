@@ -17,7 +17,7 @@ function wnd = FIRST_GUI()
   #new figure for carSimulator
   realCarSimulator_figure = figure;
   #10 = min distance from road
-  realCarSimulator(10, 100);
+  realCarSimulator(10, 100, 0);
   #showCarSimulator();
   #ricepdf;
   #jakes;

@@ -208,7 +208,7 @@ function LOS_Slider_doIt(src, data, FIRST_GUI)
   lossValue = get(FIRST_GUI.LOS_Slider,"Value");
   set(FIRST_GUI.LOS,'String',sprintf('LOS\n%.2f%c',lossValue, '%'));
   set(FIRST_GUI.NLOS,'String',sprintf('NLOS\n%.2f%c',100-lossValue, '%'));
-  realCarSimulator(get(FIRST_GUI.Distance__Slider_2_BD,"Value"), lossValue);
+  realCarSimulator(get(FIRST_GUI.Distance__Slider_2_BD,"Value"), lossValue, 0);
 end
 
 ## @deftypefn  {} {} Distance__Slider_2_BD_doIt (@var{src}, @var{data}, @var{FIRST_GUI})
@@ -219,7 +219,7 @@ end
 function Distance__Slider_2_BD_doIt(src, data, FIRST_GUI)
   sliderValue = get(FIRST_GUI.Distance__Slider_2_BD,"Value");
   set(FIRST_GUI.Distance_label,'String',sprintf('Distance = %.1fm',sliderValue));
-  realCarSimulator(sliderValue, get(FIRST_GUI.LOS_Slider,"Value"));
+  realCarSimulator(sliderValue, get(FIRST_GUI.LOS_Slider,"Value"), 0);
   disp('hello_2');
 % This code will be executed when user change the value of slider.
 % As default, all events are deactivated, to activate must set the
@@ -789,7 +789,14 @@ end
 ##
 ## @end deftypefn
 function SimStart_doIt(src, data, FIRST_GUI)
-  wnd = show_Dialog_1(controlIfChecked(FIRST_GUI.PathLoss), controlIfChecked(FIRST_GUI.DelayProfile), controlIfChecked(FIRST_GUI.Recv));
+  
+  for t = 0:0.05:3
+    realCarSimulator(get(FIRST_GUI.Distance__Slider_2_BD,"Value"), get(FIRST_GUI.LOS_Slider,"Value"), t);
+    hold on; 
+    pause(0.05);
+    hold off;
+  end
+  #wnd = show_Dialog_1(controlIfChecked(FIRST_GUI.PathLoss), controlIfChecked(FIRST_GUI.DelayProfile), controlIfChecked(FIRST_GUI.Recv));
 end
 
 function box = controlIfChecked(checkBox)

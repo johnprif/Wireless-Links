@@ -1,4 +1,4 @@
-function realCarSimulator(distanceFromRoad_buildings, loss)
+function realCarSimulator(distanceFromRoad_buildings, loss, moveCar)
 
   tx = linspace (-8, 20, 41)';
   ty = linspace (-8, 20, 41)';
@@ -31,7 +31,7 @@ function realCarSimulator(distanceFromRoad_buildings, loss)
   disp(buildings_distance);
   #car
   #x.-(2.0) change + to move the car
-  surf(x.*(5).-(2.0), y.*(2).+buildings_distance, z.*(0.12).-(0.4), 'FaceColor','r'); #car
+  surf(x.*(5).-(2.0).+(moveCar), y.*(2).+buildings_distance, z.*(0.12).-(0.4), 'FaceColor','r'); #car
   
   #antenna
   surf(x.-(0.75), y.+(2.0), z, 'FaceColor',[1 0 1]); 
