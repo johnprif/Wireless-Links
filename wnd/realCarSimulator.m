@@ -7,7 +7,7 @@ function realCarSimulator(distanceFromRoad_buildings, loss, moveCar)
   tz = sin (r) ./ r;
 
 
-  surf (tx, ty, ones(length(r)).*(-0.5), 'FaceColor',[0 1 1], 'linestyle', 'none'); #rruge
+  surf (tx, ty, ones(length(r)).*(-0.5), 'FaceColor',[0 1 1], 'linestyle', 'none'); #road
 
   hold on;
 
