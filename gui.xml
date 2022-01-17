@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dialog Color="[0.941 0.941 0.941]" HPosition="center" Name="FIRST_GUI" Position="[606 154 1192 926]" Resize="on" VPosition="center" windowStyle="modal">
+    <GlobalSrc>%
+% The source code writed here will be executed when
+% windows load. Work like 'onLoad' event of other languages.
+%
+</GlobalSrc>
+    <uiControl class="groupPanel" BackgroundColor="[0.941 0.941 0.941]" BorderWidth="1" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" Name="SetGeometryData" Position="[6 7 506 435]" Title="1. Set Geometry Data" TitlePosition="lefttop">
+        <ContainerSrc/>
+        <uiControl class="groupPanel" BackgroundColor="[0.941 0.941 0.941]" BorderWidth="1" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" Name="AntennaPanel" Position="[8 23 491 260]" Title="Antenna" TitlePosition="lefttop">
+            <ContainerSrc/>
+            <uiControl class="sliderCtrl" BackgroundColor="[0.941 0.941 0.941]" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Max="100" Min="5" Name="Height_Slider" Position="[157 32 305 20]" TooltipString="" Value="5">% This code will be executed when user change the value of slider.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallbck' from the properties editor</uiControl>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="Height" Position="[5 35 144 16]" String="Height=" TooltipString=""/>
+            <uiControl class="sliderCtrl" BackgroundColor="[0.941 0.941 0.941]" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Max="60" Min="-60" Name="Elevation_Slider" Position="[158 81 304 21]" TooltipString="" Value="0">% This code will be executed when user change the value of slider.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallbck' from the properties editor</uiControl>
+            <uiControl class="sliderCtrl" BackgroundColor="[0.941 0.941 0.941]" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Max="180" Min="-180" Name="Azimuth_Slider" Position="[156 130 306 22]" TooltipString="" Value="0">% This code will be executed when user change the value of slider.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallbck' from the properties editor</uiControl>
+            <uiControl class="sliderCtrl" BackgroundColor="[0.941 0.941 0.941]" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Max="100" Min="-100" Name="Horizon_Slider" Position="[158 175 304 22]" TooltipString="" Value="0">% This code will be executed when user change the value of slider.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallbck' from the properties editor</uiControl>
+            <uiControl class="sliderCtrl" BackgroundColor="[0.941 0.941 0.941]" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Max="200" Min="-2000" Name="Distance_Slider" Position="[159 218 304 21]" TooltipString="" Value="0">% This code will be executed when user change the value of slider.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallbck' from the properties editor</uiControl>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="true" Name="Label_2" Position="[5 50 0 16]" String="" TooltipString=""/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="Azimuth" Position="[5 134 145 16]" String="Azimuth= " TooltipString=""/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="Horizon" Position="[5 180 144 16]" String="Horizon=" TooltipString=""/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="Elevation" Position="[2 86 149 16]" String=" Elevation= " TooltipString=""/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="Distance" Position="[5 220 145 16]" String="Distance= " TooltipString=""/>
+        </uiControl>
+        <uiControl class="groupPanel" BackgroundColor="[0.941 0.941 0.941]" BorderWidth="1" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" Name="BuildingsPanel" Position="[8 288 491 134]" Title="Buildings" TitlePosition="lefttop">
+            <ContainerSrc/>
+            <uiControl class="sliderCtrl" BackgroundColor="[0.941 0.941 0.941]" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Max="100" Min="0" Name="LOS_Slider" Position="[126 45 264 22]" TooltipString="" Value="0">% This code will be executed when user change the value of slider.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallbck' from the properties editor</uiControl>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="true" Name="Label_7" Position="[55 25 62 55]" String="LOS:" TooltipString=""/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="true" Name="Label_8" Position="[402 30 53 56]" String="NLOS" TooltipString=""/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="true" Name="Label_9" Position="[220 15 72 16]" String="Line of Sight" TooltipString=""/>
+            <uiControl class="sliderCtrl" BackgroundColor="[0.941 0.941 0.941]" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Max="100" Min="10" Name="Distance__Slider_2_BD" Position="[125 85 263 22]" TooltipString="" Value="10">% This code will be executed when user change the value of slider.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallbck' from the properties editor</uiControl>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="Label_10" Position="[5 87 114 19]" String="Distance=  " TooltipString=""/>
+        </uiControl>
+    </uiControl>
+    <uiControl class="groupPanel" BackgroundColor="[0.941 0.941 0.941]" BorderWidth="1" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" Name="SetData" Position="[5 447 508 434]" Title="2. Set Transmitter-Medium-Receiver Data" TitlePosition="lefttop">
+        <ContainerSrc/>
+        <uiControl class="groupPanel" BackgroundColor="[0.941 0.941 0.941]" BorderWidth="1" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" Name="TransmitterPanel" Position="[10 23 490 201]" Title="Transmitter" TitlePosition="lefttop">
+            <ContainerSrc/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="Power" Position="[5 38 160 20]" String="Power=    " TooltipString=""/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="Frequency" Position="[5 92 158 19]" String="Frequency=    " TooltipString=""/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="Transmitter_Antenna_Type" Position="[5 152 159 18]" String="Antenna Type:   " TooltipString=""/>
+            <uiControl class="sliderCtrl" BackgroundColor="[0.941 0.941 0.941]" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Max="100" Min="1" Name="Power_Slider" Position="[175 35 232 22]" TooltipString="" Value="1">% This code will be executed when user change the value of slider.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallbck' from the properties editor</uiControl>
+            <uiControl class="cmbCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="Power_Units" Position="[418 35 64 25]" String="W|dbW|mW|dbmW" TooltipString=""/>
+            <uiControl class="sliderCtrl" BackgroundColor="[0.941 0.941 0.941]" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Max="5000" Min="400" Name="Frequency_Slider" Position="[172 90 235 22]" TooltipString="" Value="400">% This code will be executed when user change the value of slider.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallbck' from the properties editor</uiControl>
+            <uiControl class="cmbCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="Frequency_Units" Position="[417 90 65 25]" String="MHz" TooltipString=""/>
+            <uiControl class="cmbCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="Antenna_Types" Position="[170 150 239 25]" String="0.25 Wavelength Dipole|0.5 Wavelength Dipole|1.5 Wavelength Dipole|Hertzian Dipole|Large Loop|Short Dipole|Small Loop|Wavelength Dipole" TooltipString=""/>
+        </uiControl>
+        <uiControl class="groupPanel" BackgroundColor="[0.941 0.941 0.941]" BorderWidth="1" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" Name="MediumPanel" Position="[11 237 490 83]" Title="Medium" TitlePosition="lefttop">
+            <ContainerSrc/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="PropagationModel" Position="[5 34 112 16]" String="Propagation Model:" TooltipString=""/>
+            <uiControl class="cmbCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="PropagationModelChooser" Position="[135 30 233 25]" String="Free Space|Okumura-Hata Local Area|Okumura-Hata Suburban Area|Okumura-Hata Urban Area|Plane Earth" TooltipString=""/>
+            <uiControl class="buttonCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="Medium_Edit" Position="[380 31 57 26]" String="Edit" TooltipString="">% This code will be executed when user click the button control.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallback' from the properties editor</uiControl>
+        </uiControl>
+        <uiControl class="groupPanel" BackgroundColor="[0.941 0.941 0.941]" BorderWidth="1" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" Name="ReceiverPanel" Position="[10 338 491 81]" Title="Receiver" TitlePosition="lefttop">
+            <ContainerSrc/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="Speed" Position="[5 23 115 16]" String="Speed= " TooltipString=""/>
+            <uiControl class="sliderCtrl" BackgroundColor="[0.941 0.941 0.941]" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" Max="200" Min="1" Name="Speed_Slider" Position="[127 20 232 22]" TooltipString="" Value="1">% This code will be executed when user change the value of slider.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallbck' from the properties editor</uiControl>
+            <uiControl class="cmbCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="Speed_Units" Position="[370 20 72 25]" String="Km/h|m/s" TooltipString=""/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="Receiver_Antenna_Type" Position="[5 55 108 16]" String="Antenna Type: " TooltipString=""/>
+            <uiControl class="cmbCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="Receiver_Antenna_Type_Chooser" Position="[125 50 236 25]" String="0.25 Wavelength Dipole|0.5 Wavelength Dipole|1.5 Wavelength Dipole|Hertzian Dipole|Large Loop|Short Dipole|Small Loop|Wavelength Dipole" TooltipString=""/>
+            <uiControl class="buttonCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="Receiver_Edit" Position="[372 50 69 24]" String="Edit" TooltipString="">% This code will be executed when user click the button control.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallback' from the properties editor</uiControl>
+        </uiControl>
+    </uiControl>
+    <uiControl class="groupPanel" BackgroundColor="[0.941 0.941 0.941]" BorderWidth="1" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" Name="SetChanneData" Position="[529 5 618 603]" Title="3. Set Channel Data" TitlePosition="lefttop">
+        <ContainerSrc/>
+        <uiControl class="groupPanel" BackgroundColor="[0.941 0.941 0.941]" BorderWidth="1" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" Name="GroupPanel_10" Position="[10 20 599 127]" Title="Fading" TitlePosition="lefttop">
+            <ContainerSrc/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="LOSRiceFactor" Position="[5 30 186 16]" String="LOS Rice factor =" TooltipString=""/>
+            <uiControl class="sliderCtrl" BackgroundColor="[0.941 0.941 0.941]" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Max="50" Min="1" Name="LOS_Rice_Slider" Position="[200 25 324 22]" TooltipString="" Value="1">% This code will be executed when user change the value of slider.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallbck' from the properties editor</uiControl>
+            <uiControl class="buttonCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" Name="LOS_View" Position="[530 25 64 22]" String="View" TooltipString="">% This code will be executed when user click the button control.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallback' from the properties editor</uiControl>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="SecondaryPaths" Position="[5 62 187 20]" String="Secondary paths= " TooltipString=""/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="RMS" Position="[5 95 189 23]" String="RMS Delay Eniviroment" TooltipString=""/>
+            <uiControl class="sliderCtrl" BackgroundColor="[0.941 0.941 0.941]" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" Max="20" Min="1" Name="Slider_12" Position="[200 60 324 22]" TooltipString="" Value="1">% This code will be executed when user change the value of slider.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallbck' from the properties editor</uiControl>
+            <uiControl class="buttonCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="RMS_Views" Position="[530 60 65 60]" String="View" TooltipString="">% This code will be executed when user click the button control.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallback' from the properties editor</uiControl>
+            <uiControl class="cmbCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="RMS_Delay_Chooser" Position="[200 94 325 26]" String="Indoor Cells|Urban Macrocell|Suburban Macrocell|Open Area|Hilly Area Macrocell|Mobile Satellite" TooltipString=""/>
+        </uiControl>
+        <uiControl class="groupPanel" BackgroundColor="[0.941 0.941 0.941]" BorderWidth="1" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" Name="WhiteNoisePanel" Position="[10 150 600 51]" Title="White Noise" TitlePosition="lefttop">
+            <ContainerSrc/>
+            <uiControl class="sliderCtrl" BackgroundColor="[0.941 0.941 0.941]" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" Max="30" Min="-30" Name="Slider_13" Position="[130 20 395 22]" TooltipString="" Value="0">% This code will be executed when user change the value of slider.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallbck' from the properties editor</uiControl>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="false" Name="Eb_No" Position="[5 24 119 16]" String="Eb/No= " TooltipString=""/>
+            <uiControl class="buttonCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="White_Noise_View" Position="[531 20 64 24]" String="View" TooltipString="">% This code will be executed when user click the button control.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallback' from the properties editor</uiControl>
+        </uiControl>
+        <uiControl class="groupPanel" BackgroundColor="[0.941 0.941 0.941]" BorderWidth="1" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" Name="EncodingOverviewPanel" Position="[11 210 599 383]" Title="Encoding and OverView" TitlePosition="lefttop">
+            <ContainerSrc/>
+            <uiControl class="textCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" HorizontalAlignment="left" isAutoSize="true" Name="MOD" Position="[190 355 34 16]" String="MOD:" TooltipString=""/>
+            <uiControl class="cmbCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" Name="ComboBox_8" Position="[240 350 166 25]" String="PSK-2|PSK-16|PSK-64|OQPSK-4|DPSK-2|DPSK-16|DPSK-64|PAM-2|PAM-16|PAM-64|QAM-16|QAM-64" TooltipString=""/>
+            <uiControl class="imgCtrl" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" Name="Image_3" Position="[10 20 565 317]"/>
+        </uiControl>
+    </uiControl>
+    <uiControl class="groupPanel" BackgroundColor="[0.941 0.941 0.941]" BorderWidth="1" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" Name="Simulation" Position="[526 619 622 258]" Title="4. Simulation" TitlePosition="lefttop">
+        <ContainerSrc/>
+        <uiControl class="groupPanel" BackgroundColor="[0.941 0.941 0.941]" BorderWidth="1" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" Name="MeasurmentsPanel" Position="[15 35 570 163]" Title="Measurements" TitlePosition="lefttop">
+            <ContainerSrc/>
+            <uiControl class="checkBoxCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="PathLoss" Position="[10 45 389 20]" String="Path Loss, Shadowing and Antenna gain variation - car position" TooltipString="" Value="deselect"/>
+            <uiControl class="checkBoxCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="Recv" Position="[10 95 97 20]" String="Recv. Field(t)" TooltipString="" Value="deselect"/>
+            <uiControl class="checkBoxCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" Name="DelayProfile" Position="[190 95 97 20]" String="Delay Profile" TooltipString="" Value="deselect"/>
+            <uiControl class="checkBoxCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="false" Name="RealTimeChAn" Position="[365 95 181 20]" String="Real-Time channel analysis" TooltipString="" Value="deselect"/>
+        </uiControl>
+        <uiControl class="buttonCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="SimStart" Position="[65 210 90 24]" String="Start" TooltipString="">% This code will be executed when user click the button control.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallback' from the properties editor</uiControl>
+        <uiControl class="buttonCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="PauseSim" Position="[245 210 90 25]" String="Pause" TooltipString="">% This code will be executed when user click the button control.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallback' from the properties editor</uiControl>
+        <uiControl class="buttonCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="StopSim" Position="[440 210 90 26]" String="Stop" TooltipString="">% This code will be executed when user click the button control.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallback' from the properties editor</uiControl>
+    </uiControl>
+    <uiControl class="buttonCtrl" BackgroundColor="[0.941 0.941 0.941]" FontAngle="normal" FontName="Arial" FontSize="10" FontWeight="normal" ForegroundColor="[0.000 0.000 0.000]" GenerateCallBack="true" Name="Transmiter_Edit" Position="[433 620 66 25]" String="Edit" TooltipString="">% This code will be executed when user click the button control.
+% As default, all events are deactivated, to activate must set the
+% propertie 'generateCallback' from the properties editor</uiControl>
+</dialog>
