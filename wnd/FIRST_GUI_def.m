@@ -57,7 +57,7 @@ function Demo_Play_doIt(src,data,FIRST_GUI)
    
 
 h=figure;
-set(h,'CloseRequestFc','');
+set(h,'CloseRequestFc','', 'Name', 'Demo play', 'NumberTitle', 'off');
 h1=subplot(3,1,1);
 #set(h1,'NextPlot','add');
 #y=-log10(globalPgain)+log10(globalRgain)+log10(globalTgain)-ShadowvaryDB;
@@ -280,6 +280,7 @@ function Medium_Edit_doIt(src, data, FIRST_GUI)
   if(strcmp(antenna_model, "Olane Earth")==1)
      setPropagationModel(figRec)
   endif
+  set(figRec, "Name", strcat("Propagation Model Properties"," -- ",antenna_model, " -- "));
 end
 
 %Propagation model parameters  window initialization 
@@ -483,6 +484,7 @@ function TransmitAndReceiv_Edit_doIt(src, data, FIRST_GUI, TransmitOrReceiv)
   if(strcmp(antenna_model, "Short Dipole")==1)
      setFigContext(figRec, 'length', 'Rin', 'on')
   endif
+  set(figRec, "Name", strcat(TransmitOrReceiv," -- ",antenna_model, " -- "));
 end
 
 
@@ -510,7 +512,7 @@ function LOS_View_doIt(src, data, FIRST_GUI)
   
   K=get(FIRST_GUI.LOS_Rice_Slider,"Value");
   x = linspace(0, 4, 100);
-  figure('windowstyle', 'modal');
+  figure('windowstyle', 'modal', "NumberTitle", "off", "Name", "LOS Rice");
 
   ha=subplot(2,1,1);
   hold on;
@@ -579,7 +581,7 @@ function newValue = unitConvert(oldValue, newUnit)
 end 
 
 %This function is called whenever the view button located near RMS delay environment chooser is pressed
-function RMS_Views_doIt(src, data, FIRST_GUI)
+function RMS_View_doIt(src, data, FIRST_GUI)
   N=floor(get(FIRST_GUI.Secondary_Paths_Slider,'Value'));
   rms=strsplit(get(FIRST_GUI.RMS_Delay_Chooser,"String"),"|");
   i=rms{1,int8(get(FIRST_GUI.RMS_Delay_Chooser,"Value"))};
@@ -627,7 +629,7 @@ CC=get(FIRST_GUI.Power_Slider,'Value');
 CC = unitConvert(CC, specificWattUnit);
 k=get(FIRST_GUI.LOS_Rice_Slider,'Value');
 figRMS = figure; 
-set(figRMS, "windowstyle", "modal");
+set(figRMS, "windowstyle", "modal", "NumberTitle", "off", "Name", "RMS Delay");
 
 oldSpeedValue = get(FIRST_GUI.Speed_Slider, "Value");
 speedUnits=strsplit(get(FIRST_GUI.Speed_Units,"String"),"|");
@@ -761,14 +763,13 @@ end
 
 %Simulation start button function
 function SimStart_doIt(src, data, FIRST_GUI)
+  showFinalReport();
   for t = 0:0.05:3
     realCarSimulator(get(FIRST_GUI.Distance__Slider_2_BD,"Value"), get(FIRST_GUI.LOS_Slider,"Value"), t);
     hold on; 
     pause(0.05);
     hold off;
   end
-  #wnd = showReport(controlIfChecked(FIRST_GUI.PathLoss), controlIfChecked(FIRST_GUI.DelayProfile), controlIfChecked(FIRST_GUI.Recv));
-  showReport();
 end
 
 
@@ -1761,7 +1762,7 @@ set (Receiver_Edit, 'callback', {@TransmitAndReceiv_Edit_doIt, FIRST_GUI, "Recei
 set (LOS_Rice_Slider, 'callback', {@LOS_Rice_Slider_doIt, FIRST_GUI});
 set (LOS_View, 'callback', {@LOS_View_doIt, FIRST_GUI});
 set (Secondary_Paths_Slider, 'callback', {@Secondary_Paths_Slider_doIt, FIRST_GUI});
-set (RMS_Views, 'callback', {@RMS_Views_doIt, FIRST_GUI});
+set (RMS_Views, 'callback', {@RMS_View_doIt, FIRST_GUI});
 set (RMS_Delay_Chooser, 'callback', {@RMS_Delay_Chooser_doIt, FIRST_GUI});
 set (Eb_No_Slider, 'callback', {@Eb_No_Slider_doIt, FIRST_GUI});
 set (White_Noise_View, 'callback', {@White_Noise_View_doIt, FIRST_GUI});

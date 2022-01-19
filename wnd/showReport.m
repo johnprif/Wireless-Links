@@ -1,7 +1,7 @@
 graphics_toolkit qt;
 
 %Function that creates the report figure after simulation end
-function ret = showReport()
+function ret = showFinalReport()
   _scrSize = get(0, "screensize");
   _xPos = (_scrSize(3) - 1173)/2;
   _yPos = (_scrSize(4) - 711)/2;

@@ -1,5 +1,4 @@
 function realCarSimulator(distanceFromRoad_buildings, loss, moveCar)
-
   tx = linspace (-8, 20, 41)';
   ty = linspace (-8, 20, 41)';
   [xx, yy] = meshgrid (tx, ty);
