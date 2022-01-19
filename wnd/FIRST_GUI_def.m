@@ -10,7 +10,8 @@
 ##
 graphics_toolkit qt;
 ##
-
+%Variable for the carSimulationWindow
+global closed=0;
 
 
 
@@ -93,7 +94,7 @@ set(h3,'YTick',[]);
 for t=90:-1:-90
     I=round(1+((90-t)*length(y)/180));
     if I>length(y)
-        I=length(y);
+          I=length(y);
     end
     set(H1,'XData',ones(size(get(H1,'XData'))).*I);
     if myPulses(I)<=(max(myPulses)/2);
@@ -194,6 +195,7 @@ function LOS_Slider_doIt(src, data, FIRST_GUI)
   lossValue = get(FIRST_GUI.LOS_Slider,"Value");
   set(FIRST_GUI.LOS,'String',sprintf('LOS\n%.2f%c',lossValue, '%'));
   set(FIRST_GUI.NLOS,'String',sprintf('NLOS\n%.2f%c',100-lossValue, '%'));
+  figure(2);
   realCarSimulator(get(FIRST_GUI.Distance__Slider_2_BD,"Value"), lossValue, 0);
 end
 
@@ -202,6 +204,7 @@ end
 function Distance__Slider_2_BD_doIt(src, data, FIRST_GUI)
   sliderValue = get(FIRST_GUI.Distance__Slider_2_BD,"Value");
   set(FIRST_GUI.Distance_label,'String',sprintf('Distance = %.1fm',sliderValue));
+  figure(2);
   realCarSimulator(sliderValue, get(FIRST_GUI.LOS_Slider,"Value"), 0);
 end
 %--------------------------------------------------------------------------------------------------------------------
@@ -763,13 +766,20 @@ end
 
 %Simulation start button function
 function SimStart_doIt(src, data, FIRST_GUI)
-  showFinalReport();
+  global closed;
+  figure(2);
+  set(figure(2), "windowstyle", "modal", "DeleteFcn", {@myCarCloseReq});
   for t = 0:0.05:3
+    if(closed==1)
+      closed=0;
+      break;
+    endif
     realCarSimulator(get(FIRST_GUI.Distance__Slider_2_BD,"Value"), get(FIRST_GUI.LOS_Slider,"Value"), t);
     hold on; 
     pause(0.05);
     hold off;
   end
+  showFinalReport();
 end
 
 %Close all figures when close button(X) of main window is pressed
@@ -777,7 +787,12 @@ function myCloseReq(src,event)
   close all;
 end
 
-
+%Close car simulation figure when close button(X) of car simulation window is pressed
+function myCarCloseReq(src,event)
+  global closed;
+  closed=1;
+  close;
+end
  
 #GUI initialization function
 function ret = show_FIRST_GUI()
@@ -1781,6 +1796,7 @@ set (Transmiter_Edit, 'callback', {@TransmitAndReceiv_Edit_doIt, FIRST_GUI, "Tra
   set(FIRST_GUI.figure, 'visible', 'on', 'resize', 'on');
   I=imread("blocks.png");
   ret = FIRST_GUI;
+  figure(1);
   axes(ret.Image_3);
   imshow(I);
 

@@ -1,5 +1,10 @@
 graphics_toolkit qt;
 
+%Close all figures when close button(X) of main window is pressed
+function myCloseReq(src,event)
+  close all;
+end
+
 %Function that creates the report figure after simulation end
 function ret = showFinalReport()
   _scrSize = get(0, "screensize");
@@ -12,7 +17,8 @@ function ret = showFinalReport()
 	'windowstyle', 'modal', ...
 	'MenuBar', 'none', ...
   'NumberTitle', 'off', ...
-  'name', 'report');
+  'name', 'report', ...
+  "DeleteFcn", {@myCloseReq});
 	 set(Dialog_1, 'visible', 'off');
   Received_Field = uipanel( ...
 	'parent',Dialog_1, ... 
