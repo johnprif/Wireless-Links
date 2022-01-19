@@ -244,30 +244,6 @@ function Frequency_Units_doIt(src, data, FIRST_GUI)
   set(FIRST_GUI.Frequency,'String',sprintf('Frequency = %.1f %s',get(FIRST_GUI.Frequency_Slider,"Value"), frequencyUnits{1,int8(get(FIRST_GUI.Frequency_Units,"Value"))}));
 end
 
-%This function passes the arguments needed for setFigContext function
-function Transmiter_Edit_doIt(src, data, FIRST_GUI)
-  figRec=figure("Name","Transmitter Antenna Properties","NumberTitle","off", 'MenuBar', 'figure', 'toolbar', 'figure', 'resize', 'off','windowstyle', 'modal');
-  axis off
-  
-  antenna_types=strsplit(get(FIRST_GUI.Antenna_Types,"String"),"|");
-  antenna_model= antenna_types{1,int8(get(FIRST_GUI.Antenna_Types,"Value"))};
-
-  if(strcmp(antenna_model, "0.25 Wavelength Dipole")==1 || strcmp(antenna_model, "0.5 Wavelength Dipole")==1 || strcmp(antenna_model, "1.5 Wavelength Dipole")==1 || strcmp(antenna_model, "Wavelength Dipole")==1)
-       setFigContext(figRec, 'Rin', '', 'off')
-  endif
-  if(strcmp(antenna_model, "Large Loop")==1 || strcmp(antenna_model, "Small Loop")==1)
-       setFigContext(figRec, 'diameter', 'Rin', 'on')
-  endif
-  
-  if(strcmp(antenna_model, "Hertzian Dipole")==1)
-      setFigContext(figRec, 'DI', 'Rin', 'on')
-  endif
-  
-  if(strcmp(antenna_model, "Short Dipole")==1)
-     setFigContext(figRec, 'length', 'Rin', 'on')
-  endif
-end
-
 
 %--------------------------------------------------------------------------------------------------------------------
 %--------------------------------------------------------------------------------------------------------------------
@@ -470,11 +446,14 @@ function setFigContext(figRec, first, second, secEnable)
   
 endfunction
 
-%This function is called when edit button from Receiver Panel is pressed
+%This function is called when edit button from Receiver Panel or Transmiter Panel is pressed
 %and according to the antenna type  chosen the right window is appeared in 
 %order to assign the values needed for the Antenna
-function Receiver_Edit_doIt(src, data, FIRST_GUI)
-  figRec=figure("Name","Receiver Antenna Properties","NumberTitle","off", 'MenuBar', 'figure', 'toolbar', 'figure', 'resize', 'off','windowstyle', 'modal');
+%TransmitOrReceiv: The name of the figure window(Transmitter Antenna Properties OR Receiver Antenna Properties)
+%This argument is passed via set method  set (Transmiter_Edit, 'callback', {@TransmitAndReceiv_Edit_doIt, FIRST_GUI, "Transmitter Antenna Properties"}); or
+% set (Receiver_Edit, 'callback', {@TransmitAndReceiv_Edit_doIt, FIRST_GUI, "Receiver Antenna Properties"});
+function TransmitAndReceiv_Edit_doIt(src, data, FIRST_GUI, TransmitOrReceiv) 
+  figRec=figure("Name",TransmitOrReceiv,"NumberTitle","off", 'MenuBar', 'figure', 'toolbar', 'figure', 'resize', 'off','windowstyle', 'modal');
   axis off
 
   
@@ -773,7 +752,6 @@ end
 
 %Simulation start button function
 function SimStart_doIt(src, data, FIRST_GUI)
-  
   for t = 0:0.05:3
     realCarSimulator(get(FIRST_GUI.Distance__Slider_2_BD,"Value"), get(FIRST_GUI.LOS_Slider,"Value"), t);
     hold on; 
@@ -781,6 +759,7 @@ function SimStart_doIt(src, data, FIRST_GUI)
     hold off;
   end
   #wnd = showReport(controlIfChecked(FIRST_GUI.PathLoss), controlIfChecked(FIRST_GUI.DelayProfile), controlIfChecked(FIRST_GUI.Recv));
+  showReport();
 end
 
 
@@ -1772,7 +1751,7 @@ set (Medium_Edit, 'callback', {@Medium_Edit_doIt, FIRST_GUI});
 set (Speed_Units, 'callback', {@Speed_Units_doIt, FIRST_GUI});
 set (Speed_Slider, 'callback', {@Speed_Slider_doIt, FIRST_GUI});
 set (Receiver_Antenna_Type_Chooser, 'callback', {@Receiver_Antenna_Type_Chooser_doIt, FIRST_GUI});
-set (Receiver_Edit, 'callback', {@Receiver_Edit_doIt, FIRST_GUI});
+set (Receiver_Edit, 'callback', {@TransmitAndReceiv_Edit_doIt, FIRST_GUI, "Receiver Antenna Properties"});
 set (LOS_Rice_Slider, 'callback', {@LOS_Rice_Slider_doIt, FIRST_GUI});
 set (LOS_View, 'callback', {@LOS_View_doIt, FIRST_GUI});
 set (Secondary_Paths_Slider, 'callback', {@Secondary_Paths_Slider_doIt, FIRST_GUI});
@@ -1783,7 +1762,7 @@ set (White_Noise_View, 'callback', {@White_Noise_View_doIt, FIRST_GUI});
 set (PathLoss, 'callback', {@PathLoss_doIt, FIRST_GUI});
 set (Recv, 'callback', {@Recv_doIt, FIRST_GUI});
 set (SimStart, 'callback', {@SimStart_doIt, FIRST_GUI});
-  set (Transmiter_Edit, 'callback', {@Transmiter_Edit_doIt, FIRST_GUI});
+set (Transmiter_Edit, 'callback', {@TransmitAndReceiv_Edit_doIt, FIRST_GUI, "Transmitter Antenna Properties"});
   dlg = struct(FIRST_GUI);
 
 
