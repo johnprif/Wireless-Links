@@ -1754,7 +1754,6 @@ set (Power_Slider, 'callback', {@Power_Slider_doIt, FIRST_GUI});
 set (Power_Units, 'callback', {@Power_Units_doIt, FIRST_GUI});
 set (Frequency_Slider, 'callback', {@Frequency_Slider_doIt, FIRST_GUI});
 set (Frequency_Units, 'callback', {@Frequency_Units_doIt, FIRST_GUI});
-set (PropagationModelChooser, 'callback', {@PropagationModelChooser_doIt, FIRST_GUI});
 set (Medium_Edit, 'callback', {@Medium_Edit_doIt, FIRST_GUI});
 set (Speed_Units, 'callback', {@Speed_Units_doIt, FIRST_GUI});
 set (Speed_Slider, 'callback', {@Speed_Slider_doIt, FIRST_GUI});
