@@ -456,9 +456,18 @@ function TransmitAndReceiv_Edit_doIt(src, data, FIRST_GUI, TransmitOrReceiv)
   figRec=figure("Name",TransmitOrReceiv,"NumberTitle","off", 'MenuBar', 'figure', 'toolbar', 'figure', 'resize', 'off','windowstyle', 'modal');
   axis off
 
+  antenna_types="";
+  antenna_model="";
   
-  antenna_types=strsplit(get(FIRST_GUI.Receiver_Antenna_Type_Chooser,"String"),"|");
-  antenna_model= antenna_types{1,int8(get(FIRST_GUI.Receiver_Antenna_Type_Chooser,"Value"))};
+  if(strncmp (TransmitOrReceiv, "Receiver", 8)==1)
+    antenna_types=strsplit(get(FIRST_GUI.Receiver_Antenna_Type_Chooser,"String"),"|");
+    antenna_model= antenna_types{1,int8(get(FIRST_GUI.Receiver_Antenna_Type_Chooser,"Value"))};
+  endif
+  if(strncmp (TransmitOrReceiv, "Transmitter", 10)==1)
+    antenna_types=strsplit(get(FIRST_GUI.Transmitter_Antenna_Type_Chooser,"String"),"|");
+    antenna_model= antenna_types{1,int8(get(FIRST_GUI.Transmitter_Antenna_Type_Chooser,"Value"))};
+  endif
+    
 
   if(strcmp(antenna_model, "0.25 Wavelength Dipole")==1 || strcmp(antenna_model, "0.5 Wavelength Dipole")==1 || strcmp(antenna_model, "1.5 Wavelength Dipole")==1 || strcmp(antenna_model, "Wavelength Dipole")==1)
        setFigContext(figRec, 'Rin','', 'off')
@@ -1162,7 +1171,7 @@ function ret = show_FIRST_GUI()
 	'Position', [417 86 65 25], ... 
 	'String', 'MHz', ... 
 	'TooltipString', '');
-  Antenna_Types = uicontrol( ...
+  Transmitter_Antenna_Type_Chooser = uicontrol( ...
 	'parent',TransmitterPanel, ... 
 	'Style','popupmenu', ... 
 	'Units', 'pixels', ... 
@@ -1693,7 +1702,7 @@ function ret = show_FIRST_GUI()
       'Power_Units', Power_Units, ...
       'Frequency_Slider', Frequency_Slider, ...
       'Frequency_Units', Frequency_Units, ...
-      'Antenna_Types', Antenna_Types, ...
+      'Transmitter_Antenna_Type_Chooser', Transmitter_Antenna_Type_Chooser, ...
       'MediumPanel', MediumPanel, ...
       'PropagationModel', PropagationModel, ...
       'PropagationModelChooser', PropagationModelChooser, ...
@@ -1745,12 +1754,10 @@ set (Power_Slider, 'callback', {@Power_Slider_doIt, FIRST_GUI});
 set (Power_Units, 'callback', {@Power_Units_doIt, FIRST_GUI});
 set (Frequency_Slider, 'callback', {@Frequency_Slider_doIt, FIRST_GUI});
 set (Frequency_Units, 'callback', {@Frequency_Units_doIt, FIRST_GUI});
-set (Antenna_Types, 'callback', {@Antenna_Types_doIt, FIRST_GUI});
 set (PropagationModelChooser, 'callback', {@PropagationModelChooser_doIt, FIRST_GUI});
 set (Medium_Edit, 'callback', {@Medium_Edit_doIt, FIRST_GUI});
 set (Speed_Units, 'callback', {@Speed_Units_doIt, FIRST_GUI});
 set (Speed_Slider, 'callback', {@Speed_Slider_doIt, FIRST_GUI});
-set (Receiver_Antenna_Type_Chooser, 'callback', {@Receiver_Antenna_Type_Chooser_doIt, FIRST_GUI});
 set (Receiver_Edit, 'callback', {@TransmitAndReceiv_Edit_doIt, FIRST_GUI, "Receiver Antenna Properties"});
 set (LOS_Rice_Slider, 'callback', {@LOS_Rice_Slider_doIt, FIRST_GUI});
 set (LOS_View, 'callback', {@LOS_View_doIt, FIRST_GUI});
