@@ -772,7 +772,10 @@ function SimStart_doIt(src, data, FIRST_GUI)
   end
 end
 
-
+%Close all figures when close button(X) of main window is pressed
+function myCloseReq(src,event)
+  close all;
+end
 
 
  
@@ -788,7 +791,8 @@ function ret = show_FIRST_GUI()
 	'windowstyle', 'normal', ...
 	'MenuBar', 'none', ...
   'Name', 'vLab 2', ...
-  'NumberTitle', 'off');
+  'NumberTitle', 'off', ...
+  "DeleteFcn", {@myCloseReq});
 	 set(FIRST_GUI, 'visible', 'off');
   ThreeDViewer = uimenu( ...
   'parent',FIRST_GUI, ...
@@ -1771,7 +1775,6 @@ set (Recv, 'callback', {@Recv_doIt, FIRST_GUI});
 set (SimStart, 'callback', {@SimStart_doIt, FIRST_GUI});
 set (Transmiter_Edit, 'callback', {@TransmitAndReceiv_Edit_doIt, FIRST_GUI, "Transmitter Antenna Properties"});
   dlg = struct(FIRST_GUI);
-
 
   speed=0;
   frequency=0;
