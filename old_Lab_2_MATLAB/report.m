@@ -1,0 +1,326 @@
+function varargout = report(varargin)
+% REPORT M-file for report.fig
+%      REPORT, by itself, creates a new REPORT or raises the existing
+%      singleton*.
+%
+%      H = REPORT returns the handle to a new REPORT or the handle to
+%      the existing singleton*.
+%
+%      REPORT('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in REPORT.M with the given input arguments.
+%
+%      REPORT('Property','Value',...) creates a new REPORT or raises the
+%      existing singleton*.  Starting from the left, property value pairs are
+%      applied to the GUI before report_OpeningFcn gets called.  An
+%      unrecognized property name or invalid value makes property application
+%      stop.  All inputs are passed to report_OpeningFcn via varargin.
+%
+%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%      instance to run (singleton)".
+%
+% See also: GUIDE, GUIDATA, GUIHANDLES
+
+% Edit the above text to modify the response to help report
+
+% Last Modified by GUIDE v2.5 11-Nov-2011 08:36:57
+
+% Begin initialization code - DO NOT EDIT
+gui_Singleton = 0;
+gui_State = struct('gui_Name',       mfilename, ...
+                   'gui_Singleton',  gui_Singleton, ...
+                   'gui_OpeningFcn', @report_OpeningFcn, ...
+                   'gui_OutputFcn',  @report_OutputFcn, ...
+                   'gui_LayoutFcn',  [] , ...
+                   'gui_Callback',   []);
+if nargin && ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+end
+
+if nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+else
+    gui_mainfcn(gui_State, varargin{:});
+end
+% End initialization code - DO NOT EDIT
+
+
+% --- Executes just before report is made visible.
+function report_OpeningFcn(hObject, eventdata, handles, varargin)
+% This function has no output args, see OutputFcn.
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% varargin   command line arguments to report (see VARARGIN)
+
+% show a toolbar
+       handles.output = hObject;
+       set(0,'Showhidden','on');
+       set(handles.ReportFig,'Toolbar','figure');
+       tbh = findall(gcf,'Type','uitoolbar');
+       X=get(tbh,'Children');
+       %Delete buttons that may mess up user experience
+       %delete(X([1 2 5  9 10 11 13 14 15 16]));
+
+
+%Panel and form positioning  arg1-> showpanel -> array -> [bool bool bool bool]
+showPanel=varargin(1);
+showPanel=showPanel{1};
+H=0;
+if showPanel(1) %Data panel
+        set(handles.Datapanel,'Units','pixels');
+        set(handles.Datapanel,'Position',[0 H 901 75]);
+        H=H+75+1;
+        % Fill in data panel   % arg2-> {'columnname1' '..' '...'}
+        columnames=varargin(2);
+        columnames=columnames{1};
+        set(handles.Datatable,'ColumnName',columnames);
+        data=varargin(3);      % arg3-> {value1 value2 ....}
+        data=data{1};
+        set(handles.Datatable,'Data',data);
+else
+        set(handles.Datapanel,'Visible','off');
+end
+if showPanel(2) % Transfer function panel.
+        set(handles.TFpanel,'Units','pixels');
+        set(handles.TFpanel,'Position',[0 H 901 180]);
+        H=H+180+1;
+        data=varargin(4);      % arg4-> {X Y}
+        data=data{1};
+        X=data{1};
+        Y=data{2};
+        plot(handles.axes4,X,Y);
+        xlabel(handles.axes4,'time - t (sec)');
+        ylabel(handles.axes4,'H(t)')
+else
+        set(handles.TFpanel,'Visible','off');
+end
+
+
+if showPanel(3)  % Power delay panel.
+        set(handles.PDPpanel,'Units','pixels');
+        set(handles.PDPpanel,'Position',[0 H 901 180]);
+        H=H+180+1;
+
+        data=varargin(5);      % arg5-> {X Y}
+
+        data=data{1};
+
+        X=data{1};
+        Y=data{2};
+        set(handles.axes3,'NextPlot','add');
+        maxX=-1;
+        maxY=-1;
+        maxZ=-1;
+        for i=1:200
+            dDelays=X{i};
+            pPowers=Y{i};
+            locations=ones(1,length(dDelays))*((i-1)*(180/199));
+            maxX=max([maxX locations]);
+            maxY=max([maxY dDelays]);
+            maxZ=max([maxZ pPowers]);
+            plot3(handles.axes3, locations,dDelays,pPowers);
+        end        
+        set(handles.axes3,'NextPlot','replace');
+        view(handles.axes3,[-8 46]);
+
+        %stem(handles.axes3, X, abs(Y));
+        try
+        set(handles.axes3,'XLim',[0 maxX*1.1]);
+        set(handles.axes3,'ZLim',[0 maxZ*1.1]);
+        set(handles.axes3,'YLim',[0 maxY*1.1]);
+        catch
+        end
+
+        xlabel(handles.axes3,'car position (m)');
+        ylabel(handles.axes3,'ray delay (sec)');
+        zlabel(handles.axes3,'relative power - dBW');
+else
+        set(handles.PDPpanel,'Visible','off');
+end
+
+if showPanel(4)  % TIR panel.
+        set(handles.TIRtag,'Units','pixels');
+        set(handles.TIRtag,'Position',[0 H 901 200]);
+        H=H+200+1;
+        data=varargin(6);      % arg6-> {X Y}
+        data=data{1};
+        X=data{1};
+        Y=data{2};
+        handles.TT=data{3};
+        if length(X)<length(Y)
+           Y=Y(1:length(X));
+        else
+           X=X(1:length(Y)); 
+        end
+        plot(handles.axes1,X,Y);
+        set(handles.axes1,'NextPlot','add');
+        xlabel(handles.axes1,'distance - (m)');
+        ylabel(handles.axes1,'Received Pow - dBW');
+        %set(handles.axes1,'YLim',[-180 -20]);
+        
+        handles.X=X;  
+        handles.Y=abs(Y);
+        handles.NofValues=length(X);
+        handles.maxy=max(Y);
+        handles.miny=min(Y);
+        handles.mywindow=floor(0.05*handles.NofValues);
+
+        set(handles.slider1,'Min',1);
+        set(handles.slider1,'Max',handles.NofValues-handles.mywindow);
+        set(handles.slider1,'Value',1);
+        
+        i=round(get(handles.slider1,'Value'));
+        handles.ax=plot(handles.axes1,[X(i) X(i+handles.mywindow) X(i+handles.mywindow) X(i) X(i)],[min(Y) min(Y) max(Y) max(Y) min(Y)],'r');
+%%%     %hist(handles.axes2,handles.Y(i:(i+handles.mywindow)),round(length(i:(i+handles.mywindow))*0.5));
+        set(handles.axes2,'XTick',[]);
+%%%     set(handles.axes2,'XLim',[min(Y) max(Y)]);    %%%%%
+        %set(handles.axes2,'YLim',[0 round(handles.NofValues/10000)]);
+        set(handles.axes2,'YTick',[]);
+        xlabel(handles.axes2,'Power Values');
+        ylabel(handles.axes2,'Histogram');
+
+        set(handles.slider2,'Min',-160);
+        set(handles.slider2,'Max',-80);
+        set(handles.slider2,'Value',-100); %
+        handles.ax2=plot(handles.axes1,handles.X,ones(1,handles.NofValues).*get(handles.slider2,'Value'),'g');
+        legend(handles.axes1,{'IR', 'Window', 'Sensitivity'});
+        v=get(handles.slider2,'Value');
+        set(handles.senstext,'String',sprintf('%3.2f dB',v));
+
+
+        [ lcf, afd ] = lcr( handles.Y, get(handles.slider2,'Value'), handles.TT );
+        Data=get(handles.Datatable,'Data');
+        Columns=get(handles.Datatable,'ColumnName');
+        for i=1:length(Columns)
+            if strcmp(Columns{i},'Average Fade Duration')
+                Data{i}=afd;
+            end
+            if strcmp(Columns{i},'Level Crossing Frequency')
+                Data{i}=lcf;
+            end
+        end
+        set(handles.Datatable,'Data',Data);
+        
+else
+        set(handles.TIRtag,'Visible','off');
+end
+
+
+
+if H==0
+    H=1;
+end
+set(handles.ReportFig,'Units','pixels');
+set(handles.ReportFig,'Position',[520 165 904 H]);
+
+% Choose default command line output for report
+handles.output = hObject;
+
+% Update handles structure
+guidata(hObject, handles);
+
+% UIWAIT makes report wait for user response (see UIRESUME)
+% uiwait(handles.ReportFig);
+
+
+% --- Outputs from this function are returned to the command line.
+function varargout = report_OutputFcn(hObject, eventdata, handles) 
+% varargout  cell array for returning output args (see VARARGOUT);
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Get default command line output from handles structure
+varargout{1} = handles.output;
+
+
+% --- Executes on slider movement.
+function slider1_Callback(hObject, eventdata, handles)
+% hObject    handle to slider1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+        i=round(get(handles.slider1,'Value'));
+        X=handles.X;
+        delete(handles.ax);
+        handles.ax=plot(handles.axes1,[X(i) X(i+handles.mywindow) X(i+handles.mywindow) X(i) X(i)],[handles.miny handles.miny handles.maxy handles.maxy handles.miny],'r');
+        hist(handles.axes2,handles.Y(i:(i+handles.mywindow)),round(length(i:(i+handles.mywindow))*0.5));
+        set(handles.axes2,'XTick',[]);
+        set(handles.axes2,'YTick',[]);
+%%%        set(handles.axes2,'XLim',[handles.miny handles.maxy]); 
+        %set(handles.axes2,'YLim',[0 round(handles.NofValues/1000)]);
+        xlabel(handles.axes2,'Power Values');
+        ylabel(handles.axes2,'Histogram');
+        
+        guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function slider1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function slider2_Callback(hObject, eventdata, handles)
+% hObject    handle to slider2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+        delete(handles.ax2);
+        v=get(handles.slider2,'Value');
+        set(handles.senstext,'String',sprintf('%f dB',v));
+        handles.ax2=plot(handles.axes1,handles.X,ones(1,handles.NofValues).*get(handles.slider2,'Value'),'g');
+        [ lcf, afd ] = lcr( -abs(handles.Y), get(handles.slider2,'Value'), handles.TT );
+        
+        Data=get(handles.Datatable,'Data');
+        Columns=get(handles.Datatable,'ColumnName');
+        for i=1:length(Columns)
+            if strcmp(Columns{i},'Average Fade Duration')
+                Data{i}=afd;
+            end
+            if strcmp(Columns{i},'Level Crossing Frequency')
+                Data{i}=lcf;
+            end
+        end
+        set(handles.Datatable,'Data',Data);
+        guidata(hObject, handles);
+        
+
+% --- Executes during object creation, after setting all properties.
+function slider2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes when user attempts to close ReportFig.
+function ReportFig_CloseRequestFcn(hObject, eventdata, handles)
+% hObject    handle to ReportFig (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: delete(hObject) closes the figure
+delete(hObject);
+
+
+% --- Executes during object creation, after setting all properties.
+function ReportFig_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ReportFig (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
