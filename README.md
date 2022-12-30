@@ -17,6 +17,7 @@ place that looks like a city.**
 
 ![Screenshot (12)](https://user-images.githubusercontent.com/56134761/210103012-f317d1ae-0e05-4c15-994d-03c7e8873cef.png)
 
-![Screenshot (13)](https://user-images.githubusercontent.com/56134761/210103018-a4f95306-8bb0-4e6b-9f3e-2fe451c2013c.png)
+![Screenshot (14)](https://user-images.githubusercontent.com/56134761/210103137-33b60a3d-c270-4f15-ab8a-a8fccb4e0107.png)
 
-![Screenshot (14)](https://user-images.githubusercontent.com/56134761/210103024-c3ea4d63-d86e-423e-b196-f1e1fe1ab81c.png)
+![Screenshot (13)](https://user-images.githubusercontent.com/56134761/210103150-8ea13c5e-6376-4197-a6ed-30aa0bd6fd35.png)
+
