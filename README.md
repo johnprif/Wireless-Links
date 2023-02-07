@@ -5,6 +5,7 @@
 We used octave in order to make that tool free and open source. This tool is used for simulation
 and visualization to study the way of signal transmission and how it is affected by obstacles in 
 place that looks like a city.**
+Regarding the detailed implementation of workshop, the details are listed in the report in pdf file
 
 
 ![Screenshot (9)](https://user-images.githubusercontent.com/56134761/210102985-aa47538a-8ef5-4f2c-b042-e955587fa1f3.png)
