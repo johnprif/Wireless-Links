@@ -117,7 +117,7 @@ Feedback and extensions (new models, GUIs) are encouraged by the department.
 **MIT License** © 2020 University of Ioannina contributors. See [LICENSE](https://github.com/johnprif/Wireless-Links/blob/main/LICENSE) file for details.
 
 For questions or collaboration, contact:
-- John Priftis (author) — [giannispriftis37@gmail.com](mailto:giannispriftis37@gmail.com)
-- Filippos Priftis (co‑author) — [filpri6@gmail.com](filpri6@gmail.com)
+- Joanis Prifti (author) — [giannispriftis37@gmail.com](mailto:giannispriftis37@gmail.com)
+- Filippo Priftis (co‑author) — [filpri6@gmail.com](filpri6@gmail.com)
 
 *Developed as an educational resource for Wireless Links (ΜΥΕ048) labs at University of Ioannina.*
